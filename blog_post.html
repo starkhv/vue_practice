@@ -1,0 +1,52 @@
+<html>
+	<head>
+		<script src='js/vue.js'></script>
+		<style>
+			.alert-box{
+				background-color: black;
+				color: red;
+			}
+		</style>
+	</head>
+	<body>
+		<div id='app'>
+			<template v-for='post in posts'>
+			<blog-post :post='post' :key='post.id'></blog-post>
+			</template>
+		</div>
+		<div id='slots'>
+			<alert-box>This is an alert</alert-box>
+		</div>
+		<script>
+		Vue.component('blog-post', {
+			props: ['post'],
+			data: function () {
+				return {
+					postFontSize: 1,
+				}
+			},
+			methods: {
+				increaseFontSize: function (){
+					this.postFontSize += 0.1;
+				},
+			},
+			template: "<div class='blogpost' :style='{ fontSize: postFontSize + \"em\"}'><h1>{{ post.title }}</h1><p>{{ post.content }}</p><button @click='increaseFontSize'>Enlarge Text</button></div>",
+		});
+		var app = new Vue({
+			el: '#app',
+			data: {
+				posts: [
+					{id: 1, title: 'first post', content: 'first content'},
+					{id: 2, title: 'second post', content: 'second content'},
+				],
+			},
+		});
+		Vue.component('alert-box', {
+			template: "<div><p>Some other text</p><p class='alert-box'><slot></slot></p></div>",
+		});
+		var slots = new Vue({
+			el: '#slots',
+		});
+		</script>
+	</body>
+</html>

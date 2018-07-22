@@ -1,0 +1,200 @@
+<html>
+	<head>
+		<script src='js/vue.js'></script>
+		<style>
+		.first_class {
+			color: red;
+		}
+		.second_class{
+			background-color: yellow;
+		}
+		.third_class{
+			border: 5px solid black;
+		}
+		.fourth_class{
+			text-transform: uppercase;
+		}
+		</style>
+	</head>
+	<body>
+	<div id="app">
+	{{ message }}
+	</div>
+	<div id="app-2">
+		<span v-bind:title="message">Hover your mouse over me for a few seconds</span>
+	</div>
+	<div id="app-3">
+		<span v-if="seen">Now you see me</span>
+	</div>
+	<div id="app-4">
+		<ol>
+			<li v-for="todo in todos">{{ todo.text }}</li>
+		</ol>
+	</div>
+	<div id='app-5'>
+		<p> {{ message }} </p>
+		<button v-on:click="reverseMessage">Reverse Message</button>
+	</div>
+	<div id='app-6'>
+		<p> {{ message }} </p>
+		<input v-model="message">
+	</div>
+	<div id='app-7'>
+	<ol>
+		<todo-item v-for='item in groceryList' v-bind:todo='item' v-bind:key='item.id'></todo-item>
+	</ol>
+	</div>
+	<div id='example'>
+		<p>Original Message:  "{{ message }}"</p>
+		<p>Computed reversed message:  "{{ reversedMessage }}"</p>
+	</div>
+	<div id='watch-example'>
+		<p>
+		Ask a yes/no question:
+		<input v-model="question">
+		</p>
+		<p>{{ answer }}</p>
+	</div>
+	<div id='class-example'>
+		<p class='first_class' v-bind:class='classObj'>Class example</p>
+	</div>
+	<div id='class-component'>
+	<classcomponent v-bind:class='{ second_class:true }'> Class component </classcomponent>
+	</div>
+	<div id='conditional'>
+		<template v-if='conditional'>
+			<div> conditional is true </div>
+		</template>
+		<template v-else>
+			<div> conditional is false </div>
+		</template>
+	</div>
+	<div id='event-handling-1'>
+		<button v-on:click='counter += 1'>1 up</button>
+		<p>The button above has been clicked {{ counter }} times.</p>
+	</div>
+	<ul id='v-for-object'>
+		<li v-for='(value, key) in snacks'> {{ key }} - {{ value }} </li>
+	</ul>
+	<div id='key-listener'>
+		<input @keyup.74="j_pressed">
+	</div>
+	<script>
+		var app = new Vue({
+			el: '#app',
+			data: {
+				message: 'Hello Vue!',
+			}
+		});
+		var app2 = new Vue({
+			el: '#app-2',
+			data: {
+				message: 'You loaded this page on ' + new Date().toLocaleString(),
+			}
+		});
+		var app3 = new Vue({
+			el: '#app-3',
+			data: {
+				seen: false,
+			}
+		});
+		var app4 = new Vue({
+			el: '#app-4',
+			data: {
+				todos: [
+					{ text: 'Learn Javascript'},
+					{ text: 'Learn Vue'},
+					{ text: 'Build something awesome'},
+					],
+			}
+		});
+		var app5 = new Vue({
+			el: '#app-5',
+			data: {
+				message: 'Hello Vue.js!',
+			},
+			methods: {
+				reverseMessage: function () {
+					this.message = this.message.split('').reverse().join('');
+				}
+			}
+		});
+		var app6 = new Vue({
+			el: '#app-6',
+			data: {
+				message: 'Hello Vue!',
+			}
+		});
+		Vue.component('todo-item',  {
+			props: ['todo'],
+			template: '<li>{{ todo.text }}</li>',
+		});
+		var app7 = new Vue({
+			el: '#app-7',
+			data: {
+				'groceryList': [
+					{ id: 0, text: 'Vegetables' },
+					{ id: 1, text: 'Cheese'},
+					{ id: 2, text: 'Whatever else humans are supposed to eat'},
+					]
+			}
+		});
+		var vm = new Vue({
+			el: '#example',
+			data: {
+				message: 'Hello',
+			},
+			computed: {
+				reversedMessage: function () {
+					return this.message.split('').reverse().join('');
+				}
+			}
+		});
+		var class_attribute = new Vue({
+			el: '#class-example',
+			data: {
+				classObj: {
+					"second_class": true,
+					"third_class": false,
+					"fourth_class": true,
+				},
+			},
+		});
+		Vue.component('classcomponent', {
+			template: "<p class='first_class'>Class Component</p>",
+		});
+		var class_component = new Vue({
+			el: '#class-component',
+		});
+		var conditional = new Vue({
+			el: '#conditional',
+			data: {
+				conditional: false,
+			},
+		});
+		var v_for_object = new Vue({
+			el: '#v-for-object',
+			data: {
+				snacks: {
+				coke: 'refreshing',
+				butter: 'appetizing',
+				},
+			},
+		});
+		var event_handling_1 = new Vue({
+			el: '#event-handling-1',
+			data: {
+				counter: 0,
+			}
+		});
+		var key_listener = new Vue({
+			el: '#key-listener',
+			methods: {
+				j_pressed: function(){
+					alert('j pressed');
+				}
+			}
+		});
+	</script>
+	</body>
+	</html>
